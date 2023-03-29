@@ -60,10 +60,9 @@ class LocationController extends GetxController{
     // continue accessing the position of the device.
     streamSubscription =
         Geolocator.getPositionStream().listen((Position position) {
-      latitude.value = 'Latitude : ${position.latitude}';
-      longitude.value = 'Longitude : ${position.longitude}';
+      latitude.value = '${position.latitude}';
+      longitude.value = '${position.longitude}';
       getAddressFromLatLang(position);
-      print('Latitude is ${position.latitude}');
     });
   }
 

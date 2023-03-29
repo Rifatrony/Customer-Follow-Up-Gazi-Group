@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:follow_up_customer/view/home_screen.dart';
 import 'package:follow_up_customer/view/login_screen.dart';
 import 'package:follow_up_customer/view/profile_screen.dart';
 import 'package:follow_up_customer/view_model/controller/user_preferences/user_preference_view_model.dart';
@@ -17,10 +15,20 @@ class SplashServices {
     //       Get.to(const LoginScreen());
     //   });
 
+    // var token = userPrefernce.getAccessToken().toString();
+    // if(token == "null" || token == ""){
+    //   Timer(const Duration(seconds: 2), () {
+    //       Get.off(const LoginScreen());
+    //     });
+    // }
+    // else{
+    //     Timer(const Duration(seconds: 2), () {
+    //       Get.off(const ProfileScreen());
+    //     });
+    //   }
+
     userPrefernce.getUser().then((value) {
-      if (kDebugMode) {
-        print("Here is the token : ${value.accessToken}");
-      }
+      
       if(value.accessToken!.isEmpty || value.accessToken.toString() == "null"){
         Timer(const Duration(seconds: 2), () {
           Get.off(const LoginScreen());

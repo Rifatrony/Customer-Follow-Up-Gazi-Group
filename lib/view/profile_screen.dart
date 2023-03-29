@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:follow_up_customer/data/response/status.dart';
+import 'package:follow_up_customer/res/AppUrl/app_url.dart';
 import 'package:follow_up_customer/res/components/AppText.dart';
 import 'package:follow_up_customer/view/add_customer_screen.dart';
 import 'package:follow_up_customer/view_model/controller/user_preferences/profile_view_model.dart';
@@ -33,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Center(child: CircularProgressIndicator());
 
         case Status.ERROR:
-          return Text("Error");
+          return Text("Error here");
 
         case Status.COMPLETED:
           return Stack(
@@ -136,8 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: CircleAvatar(
                                     radius: 50,
                                     backgroundColor: Colors.grey.shade400,
-                                    backgroundImage: const NetworkImage(
-                                        "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80")
+                                    backgroundImage: userProfileViewModel.user.value.data!.avatar != null ?  const NetworkImage("${AppUrl.baseUrl}/storage/user-avatar/y9UXDd1WpBDsJFcv8NlKE94R6BT9CwankjxsiqYG.jpg") : const NetworkImage("https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w="),
                                         
                                   ),
                                 ),

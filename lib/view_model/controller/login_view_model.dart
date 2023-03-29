@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:follow_up_customer/model/login/login_response_model.dart';
 import 'package:follow_up_customer/repositories/auth_repository/login_repository.dart';
 import 'package:follow_up_customer/utils/utils.dart';
-import 'package:follow_up_customer/view/home_screen.dart';
 import 'package:follow_up_customer/view/profile_screen.dart';
 import 'package:follow_up_customer/view_model/controller/user_preferences/user_preference_view_model.dart';
 import 'package:get/get.dart';
@@ -23,10 +22,12 @@ class LoginViewModel extends GetxController{
 
   void loginApi() {
     loading.value = true;
+    
     Map data = {
       'phone': emailController.value.text.trim(),
       'password': passwordController.value.text.trim()
     };
+    
     _api.loginApi(data).then((value) {
       
       loading.value = false;
@@ -43,13 +44,12 @@ class LoginViewModel extends GetxController{
         );
 
         userPrefernce.saveUser(LoginResponseModel.fromJson(value)).then((value) {
-        Get.to(const ProfileScreen());
+        
+          Get.to(const ProfileScreen());
+        
         }).onError((error, stackTrace) {
           Utils.snackBar("Error", error.toString());
         });
-
-        
-
       }
       
     }).onError((error, stackTrace) {
