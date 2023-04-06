@@ -7,6 +7,7 @@ import 'package:follow_up_customer/view/add_customer_screen.dart';
 import 'package:follow_up_customer/view_model/controller/user_preferences/profile_view_model.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,13 +18,26 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
+ 
+
   final userProfileViewModel = Get.put(ProfileViewModel());
 
-  @override
-  void initState() {
-    super.initState();
-    userProfileViewModel.getUserProfile();
+   @override
+    void initState() {
+      super.initState();
+      userProfileViewModel.getUserProfile();
+      checkAccessToken();
+    }
+
+  Future<void> checkAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('access_token');
+
+    if (accessToken != null) {
+      print(accessToken);
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Obx( (){
         switch(userProfileViewModel.rxRequestStatus.value){
           case Status.LOADING:
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
 
         case Status.ERROR:
-          return Text("Error here");
+          return const Text("Error here");
 
         case Status.COMPLETED:
           return Stack(
@@ -195,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 8,),
                   
                       Text(
-                        "April 2023",
+                        userProfileViewModel.user.value.data!.month.toString(),
                         style: GoogleFonts.roboto(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -214,7 +228,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 AppText(title: "Remaining\nTarget", textColor: Colors.red.shade500, fontSize: 13, fontWeight: FontWeight.w500,),
                                 const SizedBox(height: 5,),
-                                AppText(title: "50", textColor: Colors.grey.shade600, fontSize: 14, fontWeight: FontWeight.w400,),
+                                AppText(
+                                  title: "${userProfileViewModel.user.value.data!.target! - userProfileViewModel.user.value.data!.recovery!}", 
+                                  textColor: Colors.grey.shade600, 
+                                  fontSize: 14, 
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ],
                             ),
                             const Padding(
@@ -229,7 +248,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 AppText(title: "Completed\nTarget", textColor: Colors.greenAccent.shade700, fontSize: 13, fontWeight: FontWeight.w500,),
                                 const SizedBox(height: 5,),
-                                AppText(title: "100", textColor: Colors.grey.shade600, fontSize: 14, fontWeight: FontWeight.w400,),
+                                AppText(
+                                  title: userProfileViewModel.user.value.data!.recovery.toString(), 
+                                  textColor: Colors.grey.shade600, 
+                                  fontSize: 14, 
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ],
                             ),
                   
@@ -245,7 +269,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 AppText(title: "My Total\nTarget", textColor: Colors.blueAccent.shade700, fontSize: 13, fontWeight: FontWeight.w500,),
                                 const SizedBox(height: 5,),
-                                AppText(title: "150", textColor: Colors.grey.shade600, fontSize: 14, fontWeight: FontWeight.w400,),
+                                AppText(
+                                  title: userProfileViewModel.user.value.data!.target.toString(), 
+                                  textColor: Colors.grey.shade600, 
+                                  fontSize: 14, 
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ],
                             ),
                   
@@ -339,9 +368,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-
               )
-
             ],
           );
           }

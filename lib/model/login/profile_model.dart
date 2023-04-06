@@ -37,11 +37,14 @@ class Data {
   List<Area>? area;
   String? avatar;
   String? nid;
-  String? target;
+  String? month;
+  String? year;
+  int? target;
+  int? recovery;
   int? status;
 
-  Data({
-      this.id,
+  Data(
+      {this.id,
       this.name,
       this.email,
       this.phone,
@@ -52,7 +55,10 @@ class Data {
       this.area,
       this.avatar,
       this.nid,
+      this.month,
+      this.year,
       this.target,
+      this.recovery,
       this.status});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -72,7 +78,10 @@ class Data {
     }
     avatar = json['avatar'];
     nid = json['nid'];
+    month = json['month'];
+    year = json['year'];
     target = json['target'];
+    recovery = json['recovery'];
     status = json['status'];
   }
 
@@ -91,7 +100,10 @@ class Data {
     }
     data['avatar'] = this.avatar;
     data['nid'] = this.nid;
+    data['month'] = this.month;
+    data['year'] = this.year;
     data['target'] = this.target;
+    data['recovery'] = this.recovery;
     data['status'] = this.status;
     return data;
   }

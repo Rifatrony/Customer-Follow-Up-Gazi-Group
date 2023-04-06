@@ -62,40 +62,38 @@ class NetworkApiServices extends BaseApiServices {
     dynamic responseJson;
     
     try {
-      var tok = await UserPrefernce().getAccessToken();
+      var token = await UserPrefernce().getAccessToken();
 
-      var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2dhemkudGVjaGpldGl0LmNvbS9jdXN0b21lci1zZXJ2aWNlL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjgwMDg4MzgwLCJleHAiOjE2ODAzMDQzODAsIm5iZiI6MTY4MDA4ODM4MCwianRpIjoiMG02V0VHNVBoM1pNN1dQOSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.CK70StjpSnBLqIfGCLYE0b6Q-3Y0huaOIiFCpjRtSI0";
+      // var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2dhemkudGVjaGpldGl0LmNvbS9jdXN0b21lci1zZXJ2aWNlL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjgwMDg4MzgwLCJleHAiOjE2ODAzMDQzODAsIm5iZiI6MTY4MDA4ODM4MCwianRpIjoiMG02V0VHNVBoM1pNN1dQOSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.CK70StjpSnBLqIfGCLYE0b6Q-3Y0huaOIiFCpjRtSI0";
 
-      if (kDebugMode) {
-        print("Token in Post API without Raw Data $tok");
-      }
+    
       final response =
           await http.post(
             Uri.parse(url),
-            body: data,
+            body: json.encode(data),
             headers: {
-              'Authorization': 'Bearer $tok',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
             },
           ).timeout(const Duration(seconds: 20));
           responseJson = returnResponse(response);
+
+          if (kDebugMode) {
+        print("Token in Post API without Raw Data $token");
+      }
           
     } on SocketException {
       throw InternetException('');
     } on RequestTimeOut {
       throw RequestTimeOut('');
     }
-    if (kDebugMode) {
-      print(responseJson);
-    }
+    
     return responseJson;
 
   }
 
-
   dynamic returnResponse(http.Response response) {
-    if (kDebugMode) {
-      print(response.body);
-    }
+    
     switch(response.statusCode){
       case 200: 
         dynamic responseJson = jsonDecode(response.body);

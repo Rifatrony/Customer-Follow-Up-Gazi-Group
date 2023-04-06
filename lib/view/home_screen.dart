@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:follow_up_customer/data/response/status.dart';
-import 'package:follow_up_customer/view/login_screen.dart';
 import 'package:follow_up_customer/view_model/controller/business_controller/product_view_model.dart';
 import 'package:follow_up_customer/view_model/controller/user_preferences/user_preference_view_model.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,25 +24,36 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     productViewModel.getProductList();
+    checkAccessToken();
+  }
+
+  Future<void> checkAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('access_token');
+
+    if (accessToken != null) {
+      print(accessToken);
+    }
   }
   
   @override
   Widget build(BuildContext context) {
 
-  userPrefernce.getUser().then((value) {
-    token = value.accessToken.toString();
-    if (kDebugMode) {
-      print("Printing the token form home page $token");
-    }
-  });
+    var token = UserPrefernce().getAccessToken();
+    print("token");
+
+  // userPrefernce.getUser().then((value) {
+  //   token = value.accessToken.toString();
+  //   if (kDebugMode) {
+  //     print("Printing the token form home page $token");
+  //   }
+  // });
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: (){
-              // userPrefernce.removeUser().then((value) {
-              //   Get.to(const LoginScreen());
-              // });
+              
             }, 
             icon: const Icon(Icons.logout_outlined)
           ),

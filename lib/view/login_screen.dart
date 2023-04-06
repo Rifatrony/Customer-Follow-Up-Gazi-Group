@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
 
-                  TextFormField(
+                  TextFormField( 
                     controller: loginViewModel.emailController.value,
                     keyboardType: TextInputType.number,
                     focusNode: loginViewModel.emailFocusNode.value,

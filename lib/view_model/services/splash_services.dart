@@ -11,33 +11,21 @@ class SplashServices {
 
   void isLogin() {
 
-    // Timer(const Duration(seconds: 3), () {
-    //       Get.to(const LoginScreen());
-    //   });
+    Timer(const Duration(seconds: 3), () {
+      Get.to(const LoginScreen());
+    });
 
-    // var token = userPrefernce.getAccessToken().toString();
-    // if(token == "null" || token == ""){
-    //   Timer(const Duration(seconds: 2), () {
+
+    // userPrefernce.getUser().then((value) {
+    //   if(value.accessToken!.isEmpty || value.accessToken.toString() == "null"){
+    //     Timer(const Duration(seconds: 2), () {
     //       Get.off(const LoginScreen());
     //     });
-    // }
-    // else{
+    //   }else{
     //     Timer(const Duration(seconds: 2), () {
     //       Get.off(const ProfileScreen());
     //     });
     //   }
-
-    userPrefernce.getUser().then((value) {
-      
-      if(value.accessToken!.isEmpty || value.accessToken.toString() == "null"){
-        Timer(const Duration(seconds: 2), () {
-          Get.off(const LoginScreen());
-        });
-      }else{
-        Timer(const Duration(seconds: 2), () {
-          Get.off(const ProfileScreen());
-        });
-      }
-    });
+    // });
   }
 }

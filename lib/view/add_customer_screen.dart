@@ -1,4 +1,8 @@
+import 'dart:ffi';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:follow_up_customer/data/response/status.dart';
 import 'package:follow_up_customer/model/Customer/add_customer_model.dart';
 import 'package:follow_up_customer/res/Colors/appColor.dart';
 import 'package:follow_up_customer/res/components/round_button.dart';
@@ -26,10 +30,14 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
   double height = Get.height;
 
+   String? selectedItem;
+   int? selectedItemId;
+
   @override
   void initState() {
     super.initState();
     locationController.getLocation();
+    productViewModel.getProductList();
   }
 
   @override
@@ -119,8 +127,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                             context, customerViewModel.phoneFocusNode.value, customerViewModel.emailFocusNode.value);
                       },
                     ),
-                    
-          
+
                     SizedBox(height: height * 0.01,),
           
                     TextFormField(
@@ -182,9 +189,51 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               ),
       
               SizedBox(height: height * 0.01,),
-      
-              
+
+              Obx(() {
+                switch(productViewModel.rxRequestStatus.value) {
+                  case Status.LOADING:
+                    return Center(child: CircularProgressIndicator());
+
+                  case Status.ERROR:
+                    return Text("Error");
+
+                  case Status.COMPLETED:
+                  // return Text("Successfull");
+                    return Container(
+                      padding: EdgeInsets.only(left: 16, right: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey, width: 1)
+                      ),
+                      child: DropdownButton(
+                        isExpanded: true,
+                        underline: SizedBox(),
+                        hint: Text("Select Products"),
+                        value: selectedItem,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedItem = value as String?;
+                            //selectedItemId = value as int?;
+                          });
+                        },
+                        items: productViewModel.productList.value.data!.map((product) {
+                          if (kDebugMode) {
+                            print("Selected item id ${product.id}");
+                          }
+                          return DropdownMenuItem(
+                            value: product.name,
+                            child: Text(product.name.toString()),
+                          );
+                        }).toList(),
+                        
+                      ),
+                    );
+                }
+              }),
+
               SizedBox(height: height * 0.01,),
+            
       
               const Text("Products"),
       
@@ -197,9 +246,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               Obx(() {
                 return Text(locationController.latitude.value);
               }),
-          
+
               
-            ],
+
+              ],
           ),
         ),
       ),
@@ -215,7 +265,21 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             height: 50,
             onPress: (){
               if(_formKey.currentState!.validate()){
-                customerViewModel.addCustomerApi();
+
+                 Map data = {
+                  "name": customerViewModel.nameController.value.text,
+                  "mobile": customerViewModel.phoneController.value.text,
+                  "email": customerViewModel.emailController.value.text,
+                  "address": customerViewModel.addressController.value.text,
+                  "lat": locationController.latitude.value,
+                  "long": locationController.longitude.value,
+                  "area_id": "1",
+                  "priority_id": "1",
+                  "business_cat_id": "1",
+                  'product_id': ["1","2"],
+                  "date": "2023-03-20"
+                };
+                customerViewModel.addCustomerApi(data);
               }
             },
             textColor: AppColor.whiteColor,

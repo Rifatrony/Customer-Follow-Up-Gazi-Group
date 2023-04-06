@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:follow_up_customer/res/Language/languages.dart';
-import 'package:follow_up_customer/res/routes/routes.dart';
-import 'package:follow_up_customer/view/profile_screen.dart';
 import 'package:follow_up_customer/view/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -22,13 +20,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Customer Follow Up',
       translations: Languages(),
-      locale: Locale('en', 'US'),
-      fallbackLocale: Locale('en', 'US'),
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
       // locale: Locale('bn', 'BD'),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
       // getPages: [
       //   GetPage(name: '/', page: () => ProfileScreen()),
       //  // GetPage(name: '/second_screen', page: () => SecondScreen()),

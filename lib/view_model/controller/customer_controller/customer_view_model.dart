@@ -20,23 +20,9 @@ class CustomerViewModel extends GetxController{
   final customerRepository = AddCustomerRepository();
   // AddCustomerModel addCustomerModel = AddCustomerModel();
 
-  void addCustomerApi () {
+  void addCustomerApi (var data) {
 
     loading.value = true;
-
-    Map data = {
-      "name": nameController.value.text,
-      "mobile": phoneController.value.text,
-      "email": emailController.value.text,
-      "address": addressController.value.text,
-      "lat": "23.864587",
-      "long": "90.3990245",
-      "area_id": "1",
-      "priority_id": "1",
-      "business_cat_id": "1",
-      "product_id": "1",
-      "date": "2023-03-20"
-    };
       
     customerRepository.addCustomerApi(data).then((value) {
       
@@ -45,14 +31,12 @@ class CustomerViewModel extends GetxController{
       if(value['message'] == "The mobile has already been taken."){
         Utils.snackBar("Message is ", value['message']);
       }
-      else if(value['success'] == "Customer saved successfully."){
+      else {
          Utils.snackBar(
-          "New Customer Added","Welcome back ",
+          "New Customer Added","Successfully added new customer",
         );
       }
       
-      
-
     }).onError((error, stackTrace) {
       loading.value = false;
       Utils.snackBar("Error Found", error.toString());
