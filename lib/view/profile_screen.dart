@@ -151,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: CircleAvatar(
                                     radius: 50,
                                     backgroundColor: Colors.grey.shade400,
-                                    backgroundImage: userProfileViewModel.user.value.data!.avatar != null ?  const NetworkImage("${AppUrl.baseUrl}/storage/user-avatar/y9UXDd1WpBDsJFcv8NlKE94R6BT9CwankjxsiqYG.jpg") : const NetworkImage("https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w="),
+                                    // backgroundImage: userProfileViewModel.user.value.data!.avatar != null ?  const NetworkImage("${AppUrl.baseUrl}/storage/user-avatar/y9UXDd1WpBDsJFcv8NlKE94R6BT9CwankjxsiqYG.jpg") : const NetworkImage("https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w="),
                                         
                                   ),
                                 ),

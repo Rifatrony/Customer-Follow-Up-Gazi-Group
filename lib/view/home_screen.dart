@@ -60,34 +60,34 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         
       ),
-      body: 
-        Obx(() {
-          switch(productViewModel.rxRequestStatus.value) {
-            case Status.LOADING:
-              return Center(child: CircularProgressIndicator());
+      
+        // Obx(() {
+        //   switch(productViewModel.rxRequestStatus.value) {
+        //     case Status.LOADING:
+        //       return Center(child: CircularProgressIndicator());
 
-            case Status.ERROR:
-              return Text("Error");
+        //     case Status.ERROR:
+        //       return Text("Error");
 
-            case Status.COMPLETED:
-            // return Text("Successfull");
-              return ListView.builder(
-                itemCount: productViewModel.productList.value.data!.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)
-                    ),
-                    child: ListTile(
-                      title: Text(productViewModel.productList.value.data![index].name.toString()),
-                      subtitle: Text(productViewModel.productList.value.data![index].businessCatName.toString()),
-                    ),
-                  );
-                }
-              );
-          }
-        })
+        //     case Status.COMPLETED:
+        //     // return Text("Successfull");
+        //       return ListView.builder(
+        //         itemCount: productViewModel.productList.value.data!.length,
+        //         itemBuilder: (context, index) {
+        //           return Card(
+        //             color: Colors.red,
+        //             shape: RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(16)
+        //             ),
+        //             child: ListTile(
+        //               title: Text(productViewModel.productList.value.data![index].name.toString()),
+        //               subtitle: Text(productViewModel.productList.value.data![index].businessCatName.toString()),
+        //             ),
+        //           );
+        //         }
+        //       );
+        //   }
+        // })
     );
   }
 }

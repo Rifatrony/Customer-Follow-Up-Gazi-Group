@@ -29,12 +29,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (accessToken != null) {
       Timer(const Duration(seconds: 3), () {
-      Get.to(const ProfileScreen());
+      Get.offAll(const ProfileScreen());
     });
     }
     else{
       Timer(const Duration(seconds: 3), () {
-      Get.to(const LoginScreen());
+      Get.offAll(const LoginScreen());
     });
     }
   }

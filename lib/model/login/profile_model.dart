@@ -1,34 +1,65 @@
+// To parse this JSON data, do
+//
+//     final profileModel = profileModelFromJson(jsonString);
+
+import 'dart:convert';
+
+ProfileModel profileModelFromJson(String str) =>
+    ProfileModel.fromJson(json.decode(str));
+
+String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
+
 class ProfileModel {
+  ProfileModel({
+    this.status,
+    this.message,
+    this.code,
+    this.data,
+  });
+
   bool? status;
   String? message;
   int? code;
   Data? data;
 
-  ProfileModel({this.status, this.message, this.code, this.data});
+  factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    code = json['code'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    data['code'] = this.code;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
+  Data({
+    this.id,
+    this.name,
+    this.email,
+    this.phone,
+    this.role,
+    this.designation,
+    this.division,
+    this.district,
+    this.area,
+    this.avatar,
+    this.nid,
+    this.month,
+    this.year,
+    this.target,
+    this.recovery,
+    this.status,
+  });
+
   int? id;
   String? name;
-  String? email;
+  dynamic email;
   String? phone;
   String? role;
   String? designation;
@@ -43,111 +74,89 @@ class Data {
   int? recovery;
   int? status;
 
-  Data(
-      {this.id,
-      this.name,
-      this.email,
-      this.phone,
-      this.role,
-      this.designation,
-      this.division,
-      this.district,
-      this.area,
-      this.avatar,
-      this.nid,
-      this.month,
-      this.year,
-      this.target,
-      this.recovery,
-      this.status});
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        phone: json["phone"],
+        role: json["role"],
+        designation: json["designation"],
+        division: json["division"],
+        district: json["district"],
+        area: json["area"] == null
+            ? []
+            : List<Area>.from(json["area"]!.map((x) => Area.fromJson(x))),
+        avatar: json["avatar"],
+        nid: json["nid"],
+        month: json["month"],
+        year: json["year"],
+        target: json["target"],
+        recovery: json["recovery"],
+        status: json["status"],
+      );
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    phone = json['phone'];
-    role = json['role'];
-    designation = json['designation'];
-    division = json['division'];
-    district = json['district'];
-    if (json['area'] != null) {
-      area = <Area>[];
-      json['area'].forEach((v) {
-        area!.add(new Area.fromJson(v));
-      });
-    }
-    avatar = json['avatar'];
-    nid = json['nid'];
-    month = json['month'];
-    year = json['year'];
-    target = json['target'];
-    recovery = json['recovery'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['role'] = this.role;
-    data['designation'] = this.designation;
-    data['division'] = this.division;
-    data['district'] = this.district;
-    if (this.area != null) {
-      data['area'] = this.area!.map((v) => v.toJson()).toList();
-    }
-    data['avatar'] = this.avatar;
-    data['nid'] = this.nid;
-    data['month'] = this.month;
-    data['year'] = this.year;
-    data['target'] = this.target;
-    data['recovery'] = this.recovery;
-    data['status'] = this.status;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "role": role,
+        "designation": designation,
+        "division": division,
+        "district": district,
+        "area": area == null
+            ? []
+            : List<dynamic>.from(area!.map((x) => x.toJson())),
+        "avatar": avatar,
+        "nid": nid,
+        "month": month,
+        "year": year,
+        "target": target,
+        "recovery": recovery,
+        "status": status,
+      };
 }
 
 class Area {
+  Area({
+    this.id,
+    this.name,
+    this.pivot,
+  });
+
   int? id;
   String? name;
   Pivot? pivot;
 
-  Area({this.id, this.name, this.pivot});
+  factory Area.fromJson(Map<String, dynamic> json) => Area(
+        id: json["id"],
+        name: json["name"],
+        pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
+      );
 
-  Area.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    if (this.pivot != null) {
-      data['pivot'] = this.pivot!.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "pivot": pivot?.toJson(),
+      };
 }
 
 class Pivot {
+  Pivot({
+    this.userId,
+    this.areaId,
+  });
+
   int? userId;
   int? areaId;
 
-  Pivot({this.userId, this.areaId});
+  factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(
+        userId: json["user_id"],
+        areaId: json["area_id"],
+      );
 
-  Pivot.fromJson(Map<String, dynamic> json) {
-    userId = json['user_id'];
-    areaId = json['area_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['area_id'] = this.areaId;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "user_id": userId,
+        "area_id": areaId,
+      };
 }

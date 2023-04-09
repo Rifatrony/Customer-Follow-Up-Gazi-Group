@@ -1,12 +1,11 @@
-import 'dart:ffi';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:follow_up_customer/data/response/status.dart';
+import 'package:follow_up_customer/model/Business/product_model.dart';
 import 'package:follow_up_customer/model/Customer/add_customer_model.dart';
 import 'package:follow_up_customer/res/Colors/appColor.dart';
 import 'package:follow_up_customer/res/components/round_button.dart';
 import 'package:follow_up_customer/utils/utils.dart';
+import 'package:follow_up_customer/view_model/controller/business_controller/business_category_view_model.dart';
 import 'package:follow_up_customer/view_model/controller/business_controller/product_view_model.dart';
 import 'package:follow_up_customer/view_model/controller/customer_controller/customer_view_model.dart';
 import 'package:follow_up_customer/view_model/controller/customer_controller/customerlocation_view_model.dart';
@@ -20,18 +19,15 @@ class AddCustomerScreen extends StatefulWidget {
 }
 
 class _AddCustomerScreenState extends State<AddCustomerScreen> {
-
   CustomerViewModel customerViewModel = Get.put(CustomerViewModel());
   ProductViewModel productViewModel = Get.put(ProductViewModel());
   LocationController locationController = Get.put(LocationController());
   AddCustomerModel addCustomerModel = AddCustomerModel();
+  final businessController = Get.put(BusinesssCategoryViewModel());
 
   final _formKey = GlobalKey<FormState>();
 
   double height = Get.height;
-
-   String? selectedItem;
-   int? selectedItemId;
 
   @override
   void initState() {
@@ -45,38 +41,32 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black
-        ),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
           "Add new Customer",
-          style: TextStyle(
-            color: Colors.black
-          ),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 26),
           child: Column(
-            
-            children: [      
-              
-              SizedBox(height: Get.height * 0.05,),
-        
+            children: [
+              SizedBox(
+                height: Get.height * 0.05,
+              ),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-          
                     TextFormField(
                       keyboardType: TextInputType.name,
                       controller: customerViewModel.nameController.value,
                       focusNode: customerViewModel.nameFocusNode.value,
-                        validator: (value) {
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           Utils.snackBar("Name", "Name Required");
                         }
                       },
@@ -85,8 +75,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                         labelText: "Name",
                         hintText: 'Name',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)
-                        ),
+                            borderRadius: BorderRadius.circular(12)),
                         prefixIcon: const Icon(
                           Icons.person_outline,
                           color: Colors.black,
@@ -94,20 +83,22 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                       ),
                       onFieldSubmitted: (value) {
                         Utils.fieldFocusChange(
-                            context, customerViewModel.nameFocusNode.value, customerViewModel.phoneFocusNode.value);
+                            context,
+                            customerViewModel.nameFocusNode.value,
+                            customerViewModel.phoneFocusNode.value);
                       },
                     ),
-          
-                    SizedBox(height: height * 0.01,),
-          
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
                     TextFormField(
                       controller: customerViewModel.phoneController.value,
                       keyboardType: TextInputType.number,
                       focusNode: customerViewModel.phoneFocusNode.value,
-          
                       validator: (value) {
-                        if(value!.isEmpty){
-                          Utils.snackBar("Phone Number Required", "Please Enter your email");
+                        if (value!.isEmpty) {
+                          Utils.snackBar("Phone Number Required",
+                              "Please Enter your email");
                         }
                       },
                       decoration: InputDecoration(
@@ -124,30 +115,24 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                       ),
                       onFieldSubmitted: (value) {
                         Utils.fieldFocusChange(
-                            context, customerViewModel.phoneFocusNode.value, customerViewModel.emailFocusNode.value);
+                            context,
+                            customerViewModel.phoneFocusNode.value,
+                            customerViewModel.emailFocusNode.value);
                       },
                     ),
-
-                    SizedBox(height: height * 0.01,),
-          
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
                     TextFormField(
                       controller: customerViewModel.emailController.value,
                       keyboardType: TextInputType.emailAddress,
                       focusNode: customerViewModel.emailFocusNode.value,
-          
-                      // Email is not required so turn off email validation
-          
-                      //  validator: (value) {
-                      //   if(value!.isEmpty){
-                      //     Utils.snackBar("Email", "Please Enter your Email");
-                      //   }
-                      // },
                       decoration: InputDecoration(
+                        isDense: true,
                         labelText: "Email",
                         hintText: 'Email',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)
-                        ),
+                            borderRadius: BorderRadius.circular(12)),
                         prefixIcon: const Icon(
                           Icons.lock_outline,
                           color: Colors.black,
@@ -155,12 +140,14 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                       ),
                       onFieldSubmitted: (value) {
                         Utils.fieldFocusChange(
-                            context, customerViewModel.emailFocusNode.value, customerViewModel.addressocusNode.value);
+                            context,
+                            customerViewModel.emailFocusNode.value,
+                            customerViewModel.addressocusNode.value);
                       },
                     ),
-          
-                    SizedBox(height: height * 0.01,),
-          
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
                     TextFormField(
                       keyboardType: TextInputType.streetAddress,
                       controller: customerViewModel.addressController.value,
@@ -175,87 +162,113 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                         labelText: "Address",
                         hintText: 'Address',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)
-                        ),
+                            borderRadius: BorderRadius.circular(12)),
                         prefixIcon: const Icon(
                           Icons.location_on_outlined,
                           color: Colors.black,
                         ),
                       ),
                     ),
-                  
                   ],
                 ),
               ),
-      
-              SizedBox(height: height * 0.01,),
-
+              SizedBox(
+                height: height * 0.01,
+              ),
               Obx(() {
-                switch(productViewModel.rxRequestStatus.value) {
-                  case Status.LOADING:
-                    return Center(child: CircularProgressIndicator());
-
-                  case Status.ERROR:
-                    return Text("Error");
-
-                  case Status.COMPLETED:
-                  // return Text("Successfull");
-                    return Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey, width: 1)
-                      ),
-                      child: DropdownButton(
-                        isExpanded: true,
-                        underline: SizedBox(),
-                        hint: Text("Select Products"),
-                        value: selectedItem,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedItem = value as String?;
-                            //selectedItemId = value as int?;
-                          });
-                        },
-                        items: productViewModel.productList.value.data!.map((product) {
-                          if (kDebugMode) {
-                            print("Selected item id ${product.id}");
-                          }
-                          return DropdownMenuItem(
-                            value: product.name,
-                            child: Text(product.name.toString()),
-                          );
-                        }).toList(),
-                        
-                      ),
-                    );
-                }
+                return businessController.loading.value
+                    ? Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: const Center(child: Text("Loading")),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey, width: 1)),
+                        child: DropdownButton(
+                          isExpanded: true,
+                          underline: const SizedBox(),
+                          hint: const Text("Select Product"),
+                          value: businessController.selectedCategory,
+                          items: businessController.business.value.data!
+                              .map((business) => DropdownMenuItem(
+                                    child: new Text(
+                                      business.name.toString(),
+                                    ),
+                                    value: business,
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              businessController.selectedCategory = value;
+                            });
+                          },
+                        ),
+                      );
               }),
-
-              SizedBox(height: height * 0.01,),
-            
-      
-              const Text("Products"),
-      
-              SizedBox(height: height * 0.2,),
-      
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Obx(() {
+                return productViewModel.loading.value
+                    ? Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: const Center(child: Text("Loading")),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey, width: 1)),
+                        child: DropdownButton(
+                          isExpanded: true,
+                          underline: const SizedBox(),
+                          hint: const Text("Select Product"),
+                          value: productViewModel.selectedProduct,
+                          items: productViewModel.productList.value.data!
+                              .where((product) =>
+                                  product.businessCatId ==
+                                  businessController.selectedCategory?.id)
+                              .map((product) => DropdownMenuItem(
+                                    value: product,
+                                    child: Text(
+                                      product.name.toString(),
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              productViewModel.selectedProduct = value;
+                            });
+                          },
+                        ),
+                      );
+              }),
+              SizedBox(
+                height: height * 0.01,
+              ),
               Obx(() {
                 return Text(locationController.longitude.value);
               }),
-      
               Obx(() {
                 return Text(locationController.latitude.value);
               }),
-
-              
-
-              ],
+            ],
           ),
         ),
       ),
-      floatingActionButtonLocation:
-        FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Container(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Obx(
+        () => Container(
           height: 50,
           margin: const EdgeInsets.all(10),
           child: RoundButton(
@@ -263,10 +276,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             loading: customerViewModel.loading.value,
             buttonColor: Colors.blueAccent.shade200,
             height: 50,
-            onPress: (){
-              if(_formKey.currentState!.validate()){
-
-                 Map data = {
+            onPress: () {
+              if (_formKey.currentState!.validate()) {
+                Map data = {
                   "name": customerViewModel.nameController.value.text,
                   "mobile": customerViewModel.phoneController.value.text,
                   "email": customerViewModel.emailController.value.text,
@@ -275,9 +287,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                   "long": locationController.longitude.value,
                   "area_id": "1",
                   "priority_id": "1",
-                  "business_cat_id": "1",
-                  'product_id': ["1","2"],
-                  "date": "2023-03-20"
+                  "business_cat_id": businessController.selectedCategory!.id,
+                  'product_id': ["1", "2"],
                 };
                 customerViewModel.addCustomerApi(data);
               }
@@ -285,6 +296,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             textColor: AppColor.whiteColor,
           ),
         ),
+      ),
     );
   }
 }

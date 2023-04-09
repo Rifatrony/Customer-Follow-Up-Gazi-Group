@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:follow_up_customer/model/Business/product_model.dart';
 import 'package:follow_up_customer/repositories/customer/add_customer_repository.dart';
 import 'package:follow_up_customer/utils/utils.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class CustomerViewModel extends GetxController{
 
   final customerRepository = AddCustomerRepository();
   // AddCustomerModel addCustomerModel = AddCustomerModel();
+  Rx<ProductModel> selectedItem = ProductModel().obs;
 
   void addCustomerApi (var data) {
 
